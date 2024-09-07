@@ -13,41 +13,52 @@ use Illuminate\Http\Request;
 class SaleController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         $sales = Sale::with(['customer', 'seller', 'items.product', 'installment'])->get();
 
         return view('sales.index', compact('sales'));
     }
 
-    public function edit($id){
-        $sale = Sale::findOrFail($id);
-        return view('sales.edit', compact('sale'));
+    public function edit(Sale $sale)
+    {
+        $customers = Customer::all();
+        $sellers = Seller::all();
+        $paymentMethods = PaymentMethod::all();
+        $products = Product::all();
+        return view('sales.form', compact('sale', 'customers', 'sellers', 'paymentMethods', 'products'));
     }
 
-    public function update(Request $request, $id){
+    public function create()
+    {
+        $customers = Customer::all();
+        $sellers = Seller::all();
+        $paymentMethods = PaymentMethod::all();
+        $products = Product::all();
+
+        return view('sales.form', compact('customers', 'sellers', 'paymentMethods', 'products'));
+    }
+
+    public function update(Request $request, $id)
+    {
         $sale = Sale::findOrFail($id);
         $sale->update($request->all());
 
         return redirect()->route('sales.index')->with('success', 'Venda atualizada com sucesso');
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $sale = Sale::findOrFail($id);
         $sale->delete();
 
         return redirect()->route('sales.index')->with('success', 'Venda excluída com sucesso');
     }
 
-    public function create(){
-        $customers = Customer::all();
-        $sellers = Seller::all();
-        $paymentMethods = PaymentMethod::all();
-        $products = Product::all();
 
-        return view('sales.create', compact('customers', 'sellers', 'paymentMethods', 'products'));
-    }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'seller_id' => 'required|exists:sellers,id',
