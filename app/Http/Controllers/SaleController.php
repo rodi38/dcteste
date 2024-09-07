@@ -13,11 +13,29 @@ use Illuminate\Http\Request;
 class SaleController extends Controller
 {
 
-    public function index()
-    {
-        $sales = Sale::with(['customer', 'seller', 'paymentMethod'])->get();
+    public function index(){
+        $sales = Sale::with(['customer', 'seller', 'items.product', 'installment'])->get();
 
         return view('sales.index', compact('sales'));
+    }
+
+    public function edit($id){
+        $sale = Sale::findOrFail($id);
+        return view('sales.edit', compact('sale'));
+    }
+
+    public function update(Request $request, $id){
+        $sale = Sale::findOrFail($id);
+        $sale->update($request->all());
+
+        return redirect()->route('sales.index')->with('success', 'Venda atualizada com sucesso');
+    }
+
+    public function destroy($id){
+        $sale = Sale::findOrFail($id);
+        $sale->delete();
+
+        return redirect()->route('sales.index')->with('success', 'Venda excluída com sucesso');
     }
 
     public function create(){
@@ -29,71 +47,56 @@ class SaleController extends Controller
         return view('sales.create', compact('customers', 'sellers', 'paymentMethods', 'products'));
     }
 
-
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'customer_id' => 'nullable|exists:customers,id',
+    public function store(Request $request){
+        $validatedData = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
             'seller_id' => 'required|exists:sellers,id',
             'payment_method_id' => 'required|exists:payment_methods,id',
-            'total' => 'required|numeric|min:0',
-            'products.*' => 'required|exists:products,id',
-            'quantities.*' => 'required|integer|min:1',
-            'prices.*' => 'required|numeric',
-            'installments' => 'nullable|integer|min:1',
-            'installments.*' => 'nullable|numeric|min:0',
+            'items' => 'required|array',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.amount' => 'required|integer|min:1',
         ]);
 
         $sale = Sale::create([
-            'customer_id' => $request->customer_id,
-            'seller_id' => $request->seller_id,
-            'payment_method_id' => $request->payment_method_id,
-            'total' => $request->total,
+            'customer_id' => $validatedData['customer_id'],
+            'seller_id' => $validatedData['seller_id'],
+            'payment_method_id' => $validatedData['payment_method_id'],
+            'total' => 0,
         ]);
 
-        $products = $request->input('products');
-        $quantities = $request->input('quantities');
-        $prices = $request->input('prices');
+        $total = 0;
 
-        $totalPrice = 0;
 
-        foreach ($products as $index => $productId) {
-            $product = Product::find($productId);
-            $quantity = $quantities[$index];
-            $unitPrice = $prices[$index];
-            $subtotal = $unitPrice * $quantity;
+        foreach ($validatedData['items'] as $itemData) {
+            $product = Product::findOrFail($itemData['product_id']);
 
-            SaleItem::create([
-                'sale_id' => $sale->id,
-                'product_id' => $product->id,
-                'amount' => $quantity,
+            $unitPrice = $product->price;
+            $subtotal = $itemData['amount'] * $unitPrice;
+            $total += $subtotal;
+
+            $sale->items()->create([
+                'product_id' => $itemData['product_id'],
+                'amount' => $itemData['amount'],
                 'unit_price' => $unitPrice,
                 'subtotal' => $subtotal,
             ]);
-
-            $totalPrice += $subtotal;
-
-            $product->stock -= $quantity;
-            $product->save();
         }
 
-        $sale->total = $totalPrice;
-        $sale->save();
+        $sale->update(['total' => $total]);
 
-        $installments = $request->input('installments', []);
-        if (!empty($installments)) {
-            foreach ($installments as $installmentValue) {
-                Installment::create([
-                    'sale_id' => $sale->id,
-                    'number' => count($installments),
-                    'value' => $installmentValue,
-                    'expiration_date' => now()->addMonths(count($installments)), 
-                ]);
-            }
-        }
-
-        return redirect()->route('sales.index')->with('success', 'Venda criada com sucesso!');
+        return redirect()->route('sales.index')->with('success', 'Venda criada com sucesso');
     }
+
+
+
+    public function show($id)
+    {
+        $sale = Sale::with(['customer', 'seller', 'items.product', 'installment'])->findOrFail($id);
+
+        return view('sales.show', compact('sale'));
+    }
+
+
+
 
 }
