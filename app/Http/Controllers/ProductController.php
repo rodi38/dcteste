@@ -16,7 +16,12 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('products.create');
+        return view('products.form', ['product' => new Product()]);
+    }
+
+    public function edit(Product $product)
+    {
+        return view('products.form', ['product' => $product]);
     }
 
     public function store(Request $request)
@@ -44,7 +49,7 @@ class ProductController extends Controller
 
         $product->update($request->all());
 
-        return redirect()->route('sales.index')->with('success', 'Produto atualizado com sucesso');
+        return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso');
     }
 
 
