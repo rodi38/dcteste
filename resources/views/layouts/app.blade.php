@@ -8,7 +8,10 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Vendas</a>
+        <a class="navbar-brand" href="/sales">Vendas</a>
+        <a class="navbar-brand" href="/products">Produtos</a>
+        <a class="navbar-brand" href="/customers">Clientes</a>
+        <a class="navbar-brand" href="/sellers">Vendedores</a>
     </nav>
 
     <main class="py-4">
