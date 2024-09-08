@@ -183,8 +183,4 @@ class SaleController extends Controller
         return redirect()->route('sales.index')->with('success', 'Venda excluída com sucesso');
     }
 
-
-
-
-
 }
