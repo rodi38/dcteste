@@ -10,7 +10,18 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return response()->json($products);
+
+        return view('products.index', compact('products'));
+    }
+
+    public function create()
+    {
+        return view('products.form', ['product' => new Product()]);
+    }
+
+    public function edit(Product $product)
+    {
+        return view('products.form', ['product' => $product]);
     }
 
     public function store(Request $request)
@@ -21,9 +32,9 @@ class ProductController extends Controller
             'stock' => 'required|integer',
         ]);
 
-        $product = Product::create($request->all());
+        Product::create($request->all());
 
-        return response()->json($product, 201);
+        return redirect()->route('products.index')->with('success', 'Produto criado com sucesso');
     }
 
     public function update(Request $request, $id)
@@ -38,14 +49,16 @@ class ProductController extends Controller
 
         $product->update($request->all());
 
-        return response()->json($product);
+        return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso');
     }
+
+
 
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('products.index')->with('success', 'Produto excluído com sucesso');
     }
 }
