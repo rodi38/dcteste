@@ -39,7 +39,7 @@ class Sale extends Model
         return $this->hasMany(SaleItem::class);
     }
 
-    public function installment(): HasMany
+    public function installments(): HasMany
     {
         return $this->hasMany(Installment::class);
     }
