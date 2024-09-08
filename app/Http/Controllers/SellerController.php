@@ -57,8 +57,6 @@ class SellerController extends Controller
         return redirect()->route('sellers.index')->with('success', 'Produto atualizado com sucesso');
     }
 
-
-
     public function destroy($id)
     {
         $seller = Seller::findOrFail($id);
