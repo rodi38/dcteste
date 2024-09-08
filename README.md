@@ -9,7 +9,7 @@ Este é um teste feito com intuito de implementar um simples sistema de venda.
 
 
 
-para rodar o projeto é necessário ter o php 8.2 ou verão superior e composer 2.7.9.
+para rodar o projeto é necessário ter o php 8.2+ e composer 2.7.9
 
 
 
