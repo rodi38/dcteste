@@ -6,20 +6,16 @@
 
 # Sistema de Venda
 
-Este é um teste feito com intuito de implementar um simples sistema de venda com o laravel.
+Este é um teste feito com intuito de implementar um pequeno sistema de vendas com o laravel.
 
 # Manual de instalação
 
 Para rodar o projeto, inicialmente, é necessário ter o php 8.2+, composer 2.7.9, mysql e nodejs.
 
-Pra que é necessário o nodejs? é necessário pois estou utilizando vite como asset bundling.
-
-Primeiro de tudo é necessário clonar o projeto, no terminal digite o seguinte comando <code>git clone https://github.com/rodi38/dcteste.git</code>
+Primeiro de tudo é necessário clonar o projeto. No terminal digite o seguinte comando <code>git clone https://github.com/rodi38/dcteste.git</code>
 Outra opção é baixar o projeto em formato zip clicando no botão <b><> Code</b> e escolhendo a opção <b>Download ZIP</b>
 
-Com o clone feito terás alterar o nome da variável <code>.env.example</code> e parte de seu conteudo.
-
-dessa forma:
+Com o clone feito, é necessário alterar o nome do arquivo <code>.env.example</code> para <code>.env</code> e parte de seu conteudo.
 
 ANTES:
 
@@ -51,8 +47,10 @@ após isso, rode os seguintes comandos no terminal, respectivamente:
 <code>php artisan key:generate</code>
 <code>php artisan migrate</code>
 <code>npm install</code>
+<code>npm run build</code>
 
-Ao rodar o comando migrate, digite yes e pressione enter caso apareça alguma pergunta.
+Ao rodar o comando migrate, digite <b>yes</b> e pressione enter caso apareça alguma pergunta.
+
 
 terminando essa leva de comandos, é hora de rodar a aplicação com o seguinte comando no terminal: <code>php artisan serve</code>
 
