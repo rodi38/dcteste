@@ -12,7 +12,7 @@ class SaleService
     {
         return DB::transaction(function () use ($data) {
             $sale = Sale::create([
-                'customer_id' => $data['customer_id'],
+                'customer_id' => $data['customer_id'] ?? null,
                 'seller_id' => $data['seller_id'],
                 'payment_method_id' => $data['payment_method_id'],
                 'total' => 0,
@@ -31,7 +31,7 @@ class SaleService
     {
         return DB::transaction(function () use ($sale, $data) {
             $sale->update([
-                'customer_id' => $data['customer_id'],
+                'customer_id' => $data['customer_id'] ?? null,
                 'seller_id' => $data['seller_id'],
                 'payment_method_id' => $data['payment_method_id'],
             ]);

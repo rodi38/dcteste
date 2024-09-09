@@ -4,7 +4,8 @@
         <option selected></option>
         @foreach($customers as $customer)
             <option value="{{ $customer->id }}" {{ (isset($sale) && $sale->customer_id == $customer->id) ? 'selected' : '' }}>
-                {{ $customer->name }}</option>
+                {{ $customer->name }}
+            </option>
         @endforeach
     </select>
 

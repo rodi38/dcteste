@@ -14,7 +14,7 @@ class UpdateSaleRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_id' => 'required|exists:customers,id',
+            'customer_id' => 'nullable|exists:customers,id',
             'seller_id' => 'required|exists:sellers,id',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'items' => 'required|array',
