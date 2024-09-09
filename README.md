@@ -4,7 +4,7 @@
 
 </div>
 
-# Sistema de Venda
+# Sistema de Vendas
 
 Este é um teste feito com intuito de implementar um pequeno sistema de vendas com o laravel.
 
