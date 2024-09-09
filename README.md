@@ -14,8 +14,6 @@ Para rodar o projeto, inicialmente, é necessário ter o php 8.2+, composer 2.7.
 
 Pra que é necessário o nodejs? é necessário pois estou utilizando vite como asset bundling.
 
-<hr>
-
 Primeiro de tudo é necessário clonar o projeto, no terminal digite o seguinte comando <code>git clone https://github.com/rodi38/dcteste.git</code>
 Outra opção é baixar o projeto em formato zip clicando no botão <b><> Code</b> e escolhendo a opção <b>Download ZIP</b>
 
