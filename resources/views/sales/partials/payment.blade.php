@@ -22,7 +22,7 @@
                 <div class="installment-row">
                     <label for="installments[{{$index}}][value]">Valor:</label>
                     <input type="number" name="installments[{{$index}}][value]" id="changeInput" step="0.01"
-                        value="{{ $installment->value }}" required class="form-control" {{ $index === $sale->installments->count() - 1 ? 'disabled' : '' }}>
+                        value="{{ $installment->value }}" required class="form-control" {{ $index === $sale->installments->count() - 1 ? 'readonly' : '' }}>
 
                     <label for="installments[{{$index}}][expiration_date]">Data de vencimento:</label>
                     <input type="date" name="installments[{{$index}}][expiration_date]"

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+@include('partials.flash-messages')
+
 <div class="d-flex justify-content-between">
     <h1>Listagem de Produtos</h1>
 

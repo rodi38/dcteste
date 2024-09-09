@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+@include('partials.flash-messages')
+
 <div class="d-flex justify-content-between">
     <h1>Listagem de Vendas</h1>
 
@@ -18,7 +21,8 @@
             <th>Cliente</th>
             <th>Vendedor</th>
             <th>Total</th>
-            <th>Data</th>
+            <th>Parcelas</th>
+            <th>Criado em</th>
             <th>Atualizado em</th>
             <th>Ações</th>
         </tr>
@@ -27,9 +31,10 @@
         @foreach($sales as $sale)
             <tr>
                 <td>{{ $sale->id }}</td>
-                <td>{{ $sale->customer->name }}</td>
+                <td>{{ $sale->customer ? $sale->customer->name : 'N/A' }}</td>
                 <td>{{ $sale->seller->name }}</td>
                 <td>{{ $sale->total }}</td>
+                <td>{{ sizeof($sale->installments) }}</td>
                 <td>{{ $sale->created_at }}</td>
                 <td>{{ $sale->updated_at }}</td>
                 <td>

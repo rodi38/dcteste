@@ -99,6 +99,9 @@
     function createInstallments(totalAmount, numberOfInstallments) {
         const installmentAmount = Math.floor((totalAmount / numberOfInstallments) * 100) / 100;
         installments = Array(Number(numberOfInstallments)).fill(installmentAmount);
+
+        const roundingError = totalAmount - (installments[0] * installments.length);
+        installments[installments.length - 1] += roundingError;
         renderInstallments();
     }
 

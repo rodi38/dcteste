@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+@include('partials.flash-messages')
 <form action="{{ $customer->exists ? route('customers.update', $customer->id) : route('customers.store') }}"
     method="POST">
     @csrf
