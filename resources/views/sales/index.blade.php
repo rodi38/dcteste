@@ -30,7 +30,7 @@
         @foreach($sales as $sale)
             <tr>
                 <td>{{ $sale->id }}</td>
-                <td>{{ $sale->customer->name }}</td>
+                <td>{{ $sale->customer ? $sale->customer->name : 'N/A' }}</td>
                 <td>{{ $sale->seller->name }}</td>
                 <td>{{ $sale->total }}</td>
                 <td>{{ $sale->created_at }}</td>
