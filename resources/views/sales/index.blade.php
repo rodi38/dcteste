@@ -21,7 +21,8 @@
             <th>Cliente</th>
             <th>Vendedor</th>
             <th>Total</th>
-            <th>Data</th>
+            <th>Parcelas</th>
+            <th>Criado em</th>
             <th>Atualizado em</th>
             <th>Ações</th>
         </tr>
@@ -33,6 +34,7 @@
                 <td>{{ $sale->customer ? $sale->customer->name : 'N/A' }}</td>
                 <td>{{ $sale->seller->name }}</td>
                 <td>{{ $sale->total }}</td>
+                <td>{{ sizeof($sale->installments) }}</td>
                 <td>{{ $sale->created_at }}</td>
                 <td>{{ $sale->updated_at }}</td>
                 <td>
