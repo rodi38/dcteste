@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
-
+use App\Http\Requests\Product\ProductRequest;
+use App\Common\Helpers;
+use Illuminate\Database\QueryException;
 class ProductController extends Controller
 {
     public function index()
@@ -21,44 +22,37 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        return view('products.form', ['product' => $product]);
+        return view('products.form', compact('product'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-        ]);
+        Product::create($request->validated());
 
-        Product::create($request->all());
-
-        return redirect()->route('products.index')->with('success', 'Produto criado com sucesso');
+        return Helpers::redirectWith('success', 'products.index', 'Produto cadastrado com sucesso');
     }
 
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        $product = Product::findOrFail($id);
+        $product->update($request->validated());
 
-        $request->validate([
-            'name' => 'string|max:255',
-            'price' => 'numeric',
-            'stock' => 'integer',
-        ]);
-
-        $product->update($request->all());
-
-        return redirect()->route('products.index')->with('success', 'Produto atualizado com sucesso');
+        return Helpers::redirectWith('success', 'products.index', 'Produto atualizado com sucesso');
     }
 
-
-
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
-
-        return redirect()->route('products.index')->with('success', 'Produto excluído com sucesso');
+        try {
+            $product->delete();
+            return Helpers::redirectWith('success', 'products.index', 'Produto excluído com sucesso');
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return Helpers::redirectWith('error', 'products.index', 'O produto não pode ser excluido pois está atrelado a uma venda.');
+            }
+            return redirect()->route('sellers.index')->with('error', 'Ocorreu um erro ao tentar excluir o vendedor.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erro ao excluir o produto: ' . $e->getMessage());
+        }
     }
+
+
 }

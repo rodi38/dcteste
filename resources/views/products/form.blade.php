@@ -2,6 +2,8 @@
 
 @section('content')
 
+@include('partials.flash-messages')
+
 <form action="{{ $product->exists ? route('products.update', $product->id) : route('products.store') }}" method="POST">
     @csrf
     @if ($product->exists)
