@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Customer\CustomerRequest;
+use App\Http\Requests\Customer\CustomerUpdateRequest;
 use App\Models\Customer;
 
 class CustomerController extends Controller
@@ -24,28 +25,18 @@ class CustomerController extends Controller
         return view('customers.form', ['customer' => $customer]);
     }
 
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email',
-        ]);
-
-        Customer::create($request->all());
+        Customer::create($request->validated());
 
         return redirect()->route('customers.index')->with('success', 'Cliente cadastrado com sucesso!');
     }
 
-    public function update(Request $request, $id)
+    public function update(CustomerUpdateRequest $request, $id)
     {
         $customer = Customer::findOrFail($id);
 
-        $request->validate([
-            'name' => 'string|max:255',
-            'email' => 'required|email|unique:customers,email,' . $customer->id,
-        ]);
-
-        $customer->update($request->all());
+        $customer->update($request->validated());
 
         return redirect()->route('customers.index')->with('success', 'Dados atualizados com sucesso!');
     }

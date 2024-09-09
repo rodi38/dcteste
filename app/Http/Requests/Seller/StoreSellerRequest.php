@@ -14,7 +14,7 @@ class StoreSellerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:3|alpha',
             'email' => 'required|email|unique:sellers,email',
             'password' => 'required|string|confirmed|min:6',
             'code' => 'required|integer|unique:sellers,code',
